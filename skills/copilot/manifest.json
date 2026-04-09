@@ -1,0 +1,30 @@
+{
+  "name": "app-registry",
+  "description": "Register this application with the organization's AI App Registry",
+  "skillset": {
+    "api": {
+      "type": "openapi",
+      "url": "https://registry.example.com/api/v1/openapi.json"
+    },
+    "skills": [
+      {
+        "name": "register_app",
+        "description": "Register a new AI-built application with the central registry",
+        "path": "/apps",
+        "method": "POST"
+      },
+      {
+        "name": "check_registration",
+        "description": "Check if an app is already registered by searching by name and builder email",
+        "path": "/apps",
+        "method": "GET"
+      },
+      {
+        "name": "update_app",
+        "description": "Update an existing app registration or check in",
+        "path": "/apps/{id}",
+        "method": "PATCH"
+      }
+    ]
+  }
+}

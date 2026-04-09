@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  registry:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://registry:registry@db:5432/app_registry
+      ALLOWED_EMAIL_DOMAINS: acme.com
+      API_KEY_SECRET: change-me-in-production
+      CORS_ORIGINS: http://localhost:8080
+      PORT: "8080"
+      SKILL_STORAGE_PATH: /app/skills
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: registry
+      POSTGRES_PASSWORD: registry
+      POSTGRES_DB: app_registry
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U registry -d app_registry"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+volumes:
+  pgdata:
